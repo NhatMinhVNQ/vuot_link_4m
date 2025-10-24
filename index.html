@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vượt link — UgPhone</title>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0b0e1a;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+    button {
+      background: linear-gradient(135deg, #2196F3, #64B5F6);
+      border: none;
+      color: #fff;
+      padding: 10px 18px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔗 Đang tạo link vượt link...</h1>
+  <p>Vui lòng chờ trong giây lát...</p>
+
+  <script>
+    const apiToken = "667f94ea3f54f444b61f0fbf"; // API Link4m
+    const destination = "https://yourusername.github.io/token.html"; // link đích đến sau khi vượt link
+    const apiUrl = `https://link4m.co/api-shorten/v2?api=${apiToken}&url=${encodeURIComponent(destination)}`;
+
+    async function createShortLink() {
+      try {
+        const res = await fetch(apiUrl);
+        const data = await res.json();
+        if (data.status === "success") {
+          document.querySelector("h1").textContent = "✅ Link đã sẵn sàng!";
+          document.querySelector("p").innerHTML = `Nhấn vào nút bên dưới để bắt đầu vượt link.`;
+          const btn = document.createElement("button");
+          btn.textContent = "Vượt link ngay";
+          btn.onclick = () => window.location.href = data.shortenedUrl;
+          document.body.appendChild(btn);
+        } else {
+          document.querySelector("h1").textContent = "❌ Lỗi tạo link";
+          document.querySelector("p").textContent = data.message || "Không thể tạo link vượt link.";
+        }
+      } catch (e) {
+        document.querySelector("h1").textContent = "⚠️ Kết nối thất bại";
+        document.querySelector("p").textContent = "Vui lòng thử lại sau.";
+      }
+    }
+
+    createShortLink();
+  </script>
+</body>
+</html>
